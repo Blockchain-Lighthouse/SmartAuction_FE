@@ -16,7 +16,7 @@ const LandingContainer = () => {
       <S.ScrollBlock ref={containerRef}>
         <About />
         <Description />
-        <Event />
+        {/* <Event /> */}
         <Roadmap />
       </S.ScrollBlock>
     </S.Layout>

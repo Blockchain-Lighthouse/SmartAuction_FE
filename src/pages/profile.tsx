@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import MyContainerView from '@/components/views/My'
+
+import ProfileContainerView from '@/components/views/Profile'
 
 const My = () => {
   return (
@@ -9,8 +10,7 @@ const My = () => {
         <meta name='description' content='My Page' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
-
-      <MyContainerView />
+      <ProfileContainerView />
     </div>
   )
 }

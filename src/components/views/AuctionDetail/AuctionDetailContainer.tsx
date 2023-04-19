@@ -1,150 +1,135 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { FieldErrors, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 import Layout from '@/components/common/Layout/Layout'
 import Subtitle from '@/components/common/Subtitle/Subtitle'
-import { bidAuction, getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
+import { AUCTION_STATUS } from '@/components/views/Auction/AuctionContainer.const'
+import { Modal, ModalContext } from '@/components/views/AuctionDetail/AuctionDetailContainer.contexts'
+import * as S from '@/components/views/AuctionDetail/AuctionDetailContainer.styled'
+import Bidders from '@/components/views/AuctionDetail/Bidders'
+import BidModal from '@/components/views/AuctionDetail/BidModal'
+import Chat from '@/components/views/AuctionDetail/Chat'
+import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
+import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
+import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
+import { getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
+import { getUserInfo } from '@/services/api/user'
 
-import * as S from './AuctionDetailContainer.styled'
-
-interface FormValues {
-  password: string
-  bidPrice: number
-}
+import { getTimeLeftByExpiredDate } from './AuctionDetailContainer.utils'
 
 const AuctionDetailContainer = () => {
   const { id } = useRouter().query
-  const queryClient = useQueryClient()
-  const { register, handleSubmit, watch } = useForm<FormValues>()
+
   const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
     select: (data) => data.payload,
     enabled: !!id,
   })
-  // TODO: remove as string
-  const { data: bidders } = useQuery(['bidders', id], () => getAuctionBidders(auction?.contract as string), {
-    select: (data) => data?.payload.bidders,
-    enabled: !!auction?.contract,
+  const { data: bidders } = useQuery(
+    ['bidders', id],
+    () => {
+      if (!auction?.contract) {
+        throw new Error('Auction contract is not defined')
+      }
+      return getAuctionBidders(auction?.contract)
+    },
+    {
+      select: (data) => data?.payload.bidders,
+      enabled: !!auction?.contract,
+    }
+  )
+  const { data: user } = useQuery(['user'], () => getUserInfo(), {
+    select: (data) => data.payload,
+    enabled: !!getAccessTokenFromLocalStorage(),
   })
 
-  const [isOpenPasswordInputModal, setIsOpenPasswordInputModal] = useState(false)
+  const [modal, setModal] = useState<Modal>(null)
+  const [remainingTime, setRemainingTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
-  const { mutate } = useMutation(() => bidAuction(Number(id), watch('password'), Number(watch('bidPrice'))), {
-    onSuccess: () => {
-      toast.success('입찰에 성공했습니다.')
+  const isChatAvailable =
+    (auction?.status === 3 || auction?.status === 4) &&
+    (auction?.writerEoa === user?.publicKey || bidders?.at(-1)?.bidder === user?.publicKey)
 
-      queryClient.invalidateQueries(['auction', id])
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message)
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (!auction?.expiredAt) {
         return
       }
 
-      toast.error('입찰에 실패했습니다.')
-    },
-  })
+      const { days, hours, minutes, seconds } = getTimeLeftByExpiredDate(auction?.expiredAt)
 
-  const onSumbit = () => {
-    mutate()
-  }
-
-  const onError = ({ bidPrice, password }: FieldErrors<FormValues>) => {
-    if (bidPrice) {
-      toast.error(bidPrice.message)
-      return
-    }
-
-    if (password) {
-      toast.error(password.message)
-    }
-  }
-
-  const handleClick = () => {
-    setIsOpenPasswordInputModal(true)
-    mutate()
-  }
+      setRemainingTime({ days, hours, minutes, seconds })
+    }, 1000)
+    return () => clearInterval(intervalId)
+  }, [auction?.expiredAt])
 
   return (
-    <Layout>
-      <S.Container>
-        <S.Wrapper>
-          <S.TitleWrapper>
-            <S.AuctionTitle>{auction?.title}</S.AuctionTitle>
-            <S.Writer size='2'>작성자: {auction?.writerEmail}</S.Writer>
-          </S.TitleWrapper>
-          {/* TODO: remove as string */}
-          <S.Description dangerouslySetInnerHTML={{ __html: auction?.description as string }} />
-        </S.Wrapper>
-        <div>
-          <S.Menu>
-            <S.MenuButtonWrapper>
-              <Subtitle size='3'>입찰시작가: {auction?.initPrice}</Subtitle>
-              <S.MenuButton
-                onClick={() => {
-                  setIsOpenPasswordInputModal(true)
-                }}
-              >
-                입찰하기
-              </S.MenuButton>
-            </S.MenuButtonWrapper>
-            <S.MenuButtonWrapper>
-              <Subtitle size='3'>즉시낙찰가: {auction?.maxPrice}</Subtitle>
-              <S.MenuButton>즉시 구매</S.MenuButton>
-            </S.MenuButtonWrapper>
-          </S.Menu>
-          <S.BiddersBlock>
-            <Subtitle size='4'>입찰기록</Subtitle>
-            <div>
-              {bidders?.map((bidder) => (
-                <S.BidderInformation key={bidder.biddedAt}>
-                  <span>{bidder.bidder}</span>
-                  <span>{bidder.price} MATIC</span>
-                  <span>{new Date(Number(bidder.biddedAt) * 1000).toLocaleDateString()}</span>
-                </S.BidderInformation>
-              ))}
-            </div>
-          </S.BiddersBlock>
-        </div>
-      </S.Container>
-      {isOpenPasswordInputModal && (
-        <S.Modal>
-          <S.ModalWrapper>
-            <i
-              className='ri-close-line'
-              onClick={() => {
-                setIsOpenPasswordInputModal(false)
-              }}
-            />
-            <form onSubmit={handleSubmit(onSumbit, onError)}>
-              <S.ModalInput
-                type='number'
-                placeholder='입찰가를 입력해주세요.'
-                {...register('bidPrice', {
-                  required: '입찰가를 입력해주세요.',
-                  min: {
-                    value: auction?.initPrice as number,
-                    message: '입찰가는 시작가보다 높아야 합니다.',
-                  },
-                })}
-              />
-              <S.ModalInput
-                type='password'
-                placeholder='비밀번호를 입력해주세요.'
-                {...register('password', {
-                  required: '비밀번호를 입력해주세요.',
-                })}
-              />
-            </form>
-            <S.ModalButton onClick={handleClick}>입찰하기</S.ModalButton>
-          </S.ModalWrapper>
-        </S.Modal>
-      )}
-    </Layout>
+    <ModalContext.Provider
+      value={{
+        modal,
+        setModal,
+      }}
+    >
+      {modal === 'bid' && <BidModal />}
+      {modal === 'signature' && <SignatureModal writerEoa={auction?.writerEoa ?? ''} />}
+      {modal === 'withdraw' && <WithdrawModal />}
+      {/* {isChatAvailable && <Chat />} */}
+      <Layout>
+        <S.Container>
+          <S.Wrapper>
+            <S.TitleWrapper>
+              <S.AuctionTitle>{auction?.title}</S.AuctionTitle>
+              <S.Writer size='2'>작성자: {auction?.writerEmail}</S.Writer>
+            </S.TitleWrapper>
+            {/* TODO: remove as string */}
+            <S.Description dangerouslySetInnerHTML={{ __html: auction?.description as string }} />
+          </S.Wrapper>
+          <S.AuctionInfo>
+            <S.Menu>
+              <S.AuctionTitleWrapper>
+                <S.StatusTitle size='4'>{AUCTION_STATUS[auction?.status || 404]}</S.StatusTitle>
+                {auction?.status && auction?.status <= 2 && (
+                  <S.RemainTime size='1'>
+                    경매 종료까지 {remainingTime.days}일 {remainingTime.hours}시간 {remainingTime.minutes}분{' '}
+                    {remainingTime.seconds}초 남았습니다.
+                  </S.RemainTime>
+                )}
+              </S.AuctionTitleWrapper>
+              <S.PriceWrapper>
+                <Subtitle size='4'>입찰시작가</Subtitle>
+                <Subtitle>{auction?.minPrice} MATIC</Subtitle>
+              </S.PriceWrapper>
+              <S.PriceWrapper>
+                <Subtitle size='4'>즉시낙찰가</Subtitle>
+                <Subtitle> {auction?.maxPrice} MATIC</Subtitle>
+              </S.PriceWrapper>
+              {auction?.status && auction?.status <= 2 && auction.writerEoa !== user?.publicKey && (
+                <S.MenuButton
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      toast.info('로그인이 필요합니다.')
+                      return
+                    }
+                    setModal('bid')
+                  }}
+                >
+                  입찰하기
+                </S.MenuButton>
+              )}
+              {auction?.status === 3 && bidders?.at(-1)?.bidder === user?.publicKey && (
+                <S.MenuButton onClick={() => setModal('signature')}>서명하기</S.MenuButton>
+              )}
+              {auction?.status === 4 && auction.writerEoa === user?.publicKey && (
+                <S.MenuButton onClick={() => setModal('withdraw')}>출금하기</S.MenuButton>
+              )}
+            </S.Menu>
+            <Bidders contract={auction?.contract} />
+          </S.AuctionInfo>
+        </S.Container>
+      </Layout>
+    </ModalContext.Provider>
   )
 }
 

@@ -14,7 +14,9 @@ const Header = styled.header`
   }
 `
 
-const Nav = styled.div([tw`flex`])
+const Nav = styled.div`
+  ${tw`flex self-center`}
+`
 
 const AuthWrapper = styled.div`
   ${tw`flex items-center gap-2`}

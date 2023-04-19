@@ -13,6 +13,7 @@ import * as S from './SignUpContainer.styled'
 
 interface FormValues {
   email: string
+  nickname: string
   password: string
   passwordConfirm: string
 }
@@ -27,9 +28,9 @@ const SignUpContainer = () => {
   } = useForm<FormValues>()
   const { push } = useRouter()
 
-  const onSubmit = async ({ email, password }: FormValues) => {
+  const onSubmit = async ({ email, nickname, password }: FormValues) => {
     try {
-      const { statusCode } = await signUp(email, password)
+      const { statusCode } = await signUp(email, nickname, password)
       if (statusCode === 201) {
         toast.success('회원가입에 성공했습니다. 로그인을 시도해주세요.')
         push(ROUTE.SIGN_IN)
@@ -67,6 +68,19 @@ const SignUpContainer = () => {
             })}
           />
           <small role='alert'>{errors.email?.message}</small>
+        </label>
+        <label>
+          <Subtitle size='4'>닉네임</Subtitle>
+          <input
+            type='text'
+            placeholder='닉네임을 입력해주세요.'
+            {...register('nickname', {
+              required: {
+                value: true,
+                message: '닉네임을 입력해주세요.',
+              },
+            })}
+          />
         </label>
         <label>
           <Subtitle size='4'>비밀번호</Subtitle>

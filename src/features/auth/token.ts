@@ -22,4 +22,8 @@ export const setRefreshTokenToLocalStorage = (rfToken: string) => {
   localStorage.setItem('rfToken', rfToken)
 }
 
+export const removeRefreshTokenFromLocalStorage = () => {
+  localStorage.removeItem('rfToken')
+}
+
 export const isLoggedIn = () => Boolean(getAccessTokenFromLocalStorage())

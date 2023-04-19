@@ -4,42 +4,39 @@ const Description = () => {
   return (
     <S.Section>
       <S.Title>
-        We are a company that has <br />
-        created a DevOps platform <br />
-        for sofrware innovation.
+        We are a research and development team that creates innovative services that do not <br />
+        require trust among many people through Web3 services.
       </S.Title>
       <S.BlockWrapper>
         <S.Block>
           <S.IconWrapper>
-            <i className='ri-group-line'></i>
+            <i className='ri-shield-keyhole-line' />
           </S.IconWrapper>
-          <h1>Collaboration</h1>
+          <h1>Trustless by Blockchain Tech</h1>
           <p>
-            Help is a priority. even if it&apos;s not <br />
-            directly related to the goals <br />
-            you&apos;re trying to archieve.
+            We strive to create a world <br />
+            without fraud, where trust is <br />
+            not necessary.
           </p>
         </S.Block>
         <S.Block>
           <S.IconWrapper>
-            <i className='ri-lock-2-line'></i>
+            <i className='ri-group-line' />
           </S.IconWrapper>
-          <h1>Security</h1>
+          <h1>User&apos;s perspective</h1>
           <p>
-            Manage your work with built-in <br />
-            agile features. We update them <br />
-            regularly.
+            We always think and research <br />
+            from the user&apos;s perspective.
           </p>
         </S.Block>
         <S.Block>
           <S.IconWrapper>
-            <i className='ri-line-chart-line'></i>
+            <i className='ri-service-line' />
           </S.IconWrapper>
-          <h1>Analytics</h1>
+          <h1>Simple is the Best</h1>
           <p>
-            View reports and analytics <br />
-            of your team&apos;s work. It helps <br />
-            to do the work more efficiently.
+            We believe that the easiest to <br />
+            use is the best.
           </p>
         </S.Block>
       </S.BlockWrapper>

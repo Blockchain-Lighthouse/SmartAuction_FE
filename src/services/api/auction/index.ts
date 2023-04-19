@@ -5,14 +5,23 @@ export const getAuctions = (page: number, limit: number) => {
   return api.get<{ auctions: Auction[]; total: number }>(`/auctions/${page}/${limit}`)
 }
 
-export const createAuction = ({ title, description, initPrice, maxPrice, ipfsUrl, expiredAt }: AuctionParams) => {
+export const createAuction = ({
+  title,
+  description,
+  minPrice,
+  maxPrice,
+  ipfsUrl,
+  expiredAt,
+  thumbnail,
+}: AuctionParams) => {
   return api.post('/auctions', {
     title,
     description,
-    initPrice,
+    minPrice,
     maxPrice,
     ipfsUrl,
     expiredAt,
+    thumbnail,
   })
 }
 
@@ -34,4 +43,8 @@ export const getMyAuction = (userId: number | undefined, page: number, limit: nu
 
 export const getBiddedAuctionApi = (userId: number | undefined, page: number, limit: number) => {
   return api.get<GetMyAuction>(`auctions/bids/${userId}/${page}/${limit}`)
+}
+
+export const withdrawBySeller = (auctionId: number, password: string) => {
+  return api.post(`/auctions/withdraw/seller`, { auctionId, password })
 }

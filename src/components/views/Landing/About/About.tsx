@@ -10,11 +10,11 @@ const About = () => {
   return (
     <S.Section>
       <S.Block>
-        <h1>Secure second-hand</h1>
-        <strong>Trade service</strong>
+        <h1>No Fraud, Trustless</h1>
+        <strong>SecondHand Market</strong>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. <br />
-          Quisquam voluptatum, quod, quia, voluptas quae voluptates quibusdam
+          Smart Auction is a secondhand market service that is <br />
+          free from fraud and trustless trade.
         </p>
         <Link href={ROUTE.AUCTION}>
           <button>Go Demo</button>

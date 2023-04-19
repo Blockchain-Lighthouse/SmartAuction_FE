@@ -21,6 +21,7 @@ const BlockWrapper = styled.div`
 
 const Block = styled.div`
   ${tw`flex flex-col items-start rounded-3xl border-stone-800 border border-solid p-12`}
+  width: 400px;
 
   h1 {
     ${tw`font-bold text-4xl text-stone-100`}

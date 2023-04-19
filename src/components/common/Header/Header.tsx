@@ -7,6 +7,8 @@ import { removeAccessTokenFromLocalStorage } from '@/features/auth/token'
 import useLocalStorage from '@/features/auth/useLocalStorage'
 import { getUserInfo } from '@/services/api/user'
 
+import Text from '../Text/Text'
+
 import * as S from './Header.styled'
 
 const Header = () => {
@@ -43,6 +45,15 @@ const Header = () => {
       <S.AuthWrapper>
         {accessToken ? (
           <S.UserInfoBlock>
+            <S.User>
+              <Link href={ROUTE.PROFILE}>
+                <i className='ri-account-circle-fill' />
+              </Link>
+              <div>
+                <Text size='2'>{user?.nickname}님, 안녕하세요!</Text>
+                <Text size='1'>Balance: {Number(user?.balance).toFixed(3)} MATIC</Text>
+              </div>
+            </S.User>
             <S.Button onClick={handleClickLogout}>
               <i className='ri-logout-box-line'></i>
               <span>Log out</span>

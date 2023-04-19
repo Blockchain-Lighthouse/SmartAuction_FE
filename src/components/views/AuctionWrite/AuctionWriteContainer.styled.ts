@@ -6,7 +6,7 @@ const Container = styled.div`
 `
 
 const ButtonWrapper = styled.div`
-  ${tw`mb-6 flex justify-between`}
+  ${tw`mb-6 flex items-center justify-between`}
   width: 715px;
 `
 
@@ -28,6 +28,10 @@ const PriceWrapper = styled.div`
   label {
     ${tw`flex items-center gap-4 text-2xl`}
   }
+
+  span {
+    min-width: 120px;
+  }
 `
 
 const Input = styled.input`
@@ -37,6 +41,42 @@ const Input = styled.input`
     &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+`
+
+export const DatePickerWrapper = styled.label`
+  ${tw`flex items-center`}
+
+  .react-datepicker-popper {
+    ${tw`z-50`}
+  }
+
+  .react-datepicker {
+    ${tw`bg-zinc-800`}
+  }
+
+  .react-datepicker__triangle {
+    transform: translate(125px, 0px) !important;
+  }
+
+  .react-datepicker__current-month,
+  .react-datepicker__day-name,
+  .react-datepicker__day {
+    ${tw`text-gray-100`}
+  }
+
+  .react-datepicker__day {
+    &:hover {
+      ${tw`bg-zinc-300`}
+    }
+  }
+
+  .react-datepicker__header {
+    ${tw`bg-zinc-800`}
+  }
+
+  input {
+    ${tw`mb-2 w-1/2 rounded-md bg-zinc-800 p-4 text-xl`}
   }
 `
 

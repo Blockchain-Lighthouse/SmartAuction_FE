@@ -4,6 +4,8 @@ import { getApiEndpoint } from '@/envs'
 import {
   getAccessTokenFromLocalStorage,
   getRefreshTokenFromLocalStorage,
+  removeAccessTokenFromLocalStorage,
+  removeRefreshTokenFromLocalStorage,
   setAccessTokenToLocalStorage,
 } from '@/features/auth/token'
 
@@ -82,6 +84,11 @@ _api.interceptors.response.use(
             refreshSubscribers.forEach((subscriber) => subscriber(acToken))
             refreshSubscribers = []
             resolve(_api(originalRequest))
+          })
+          .catch((_error: AxiosError) => {
+            removeAccessTokenFromLocalStorage()
+            removeRefreshTokenFromLocalStorage()
+            return Promise.reject(_error)
           })
       })
         .catch((_error: AxiosError) => {

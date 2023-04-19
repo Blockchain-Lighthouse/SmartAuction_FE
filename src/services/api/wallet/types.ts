@@ -1,7 +1,4 @@
-export interface GenerateRandomMnemonicResponse {
-  mnemonic: string
-}
-
-export interface SignResponse {
-  signedBy: string
+export interface DecodeResponse {
+  publicKey: string
+  privateKey: string
 }

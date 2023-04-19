@@ -26,18 +26,16 @@ const LandingHeader = ({ scrollToIndex }: Props) => {
           <li onClick={() => scrollToIndex(1)}>
             <span>Description</span>
           </li>
-          <li onClick={() => scrollToIndex(2)}>
+          {/* <li onClick={() => scrollToIndex(2)}>
             <span>Event</span>
-          </li>
+          </li> */}
           <li onClick={() => scrollToIndex(3)}>
             <span>Roadmap</span>
           </li>
-          {/* <li>
-            <a href='#'>Contact</a>
-          </li> */}
         </ul>
       </S.Nav>
-      <S.AuthWrapper>
+      <div />
+      {/* <S.AuthWrapper>
         <Link href={ROUTE.SIGN_IN}>
           <S.Button>
             <i className='ri-login-box-line'></i>
@@ -50,7 +48,7 @@ const LandingHeader = ({ scrollToIndex }: Props) => {
             <span>Sign Up</span>
           </S.Button>
         </Link>
-      </S.AuthWrapper>
+      </S.AuthWrapper> */}
     </S.Header>
   )
 }

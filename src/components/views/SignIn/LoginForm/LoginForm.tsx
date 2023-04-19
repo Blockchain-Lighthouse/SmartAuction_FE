@@ -65,14 +65,15 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.response?.data.message === 'USER NOT EXIST') {
+        const message = error.response?.data.messsage
+        if (message === 'USER NOT EXIST') {
           setError('email', {
             type: 'manual',
             message: '존재하지 않는 이메일입니다.',
           })
           return
         }
-        if (error.response?.data.message === 'PASSWORD NOT MATCH') {
+        if (message === 'PASSWORD NOT MATCH') {
           setError('password', {
             type: 'manual',
             message: '비밀번호가 일치하지 않습니다.',
@@ -82,7 +83,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
 
         setError('email', {
           type: 'manual',
-          message: error.response?.data.message,
+          message,
         })
       }
 

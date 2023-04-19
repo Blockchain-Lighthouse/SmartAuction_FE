@@ -1,15 +1,18 @@
+export type AuctionStatus = 1 | 2 | 3 | 4 | 5 | 6
+
 export interface Auction {
   id: number
   title: string
   description: string // <div>IPHONE 파는데요 ~~<img src='www.navsv.com' /><div>
   writer: number
-  status: number
-  initPrice: number
+  status: AuctionStatus
+  minPrice: number
   maxPrice: number
   contract: string // 0xD9168068DeABD93cbfdf1471a988029b627Ac3be
   ipfsUrl: string // ipfs://naskjldnaksjddfndksjfnkf
   createdAt: string
   expiredAt: string
+  thumbnail: string
 }
 
 export interface AuctionDetail {
@@ -17,8 +20,8 @@ export interface AuctionDetail {
   description: string
   writerEoa: string
   writerEmail: string
-  status: 1
-  initPrice: number
+  status: AuctionStatus
+  minPrice: number
   maxPrice: number
   ipfsUrl: string
   contract: string
@@ -29,10 +32,11 @@ export interface AuctionDetail {
 export interface AuctionParams {
   title: string
   description: string
-  initPrice: number
+  minPrice: number
   maxPrice: number
   ipfsUrl: string
   expiredAt: string
+  thumbnail: string
 }
 
 export interface Bidder {
