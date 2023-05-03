@@ -44,3 +44,7 @@ export const User = styled.div`
 export const Button = styled.button`
   ${tw`flex items-center gap-2 rounded-md bg-stone-600 px-4 py-2 text-sm text-stone-100`}
 `
+
+export const Anchor = styled.a`
+  ${tw`flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm text-stone-100`}
+`

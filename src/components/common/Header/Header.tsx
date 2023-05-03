@@ -76,6 +76,10 @@ const Header = () => {
             </Link>
           </>
         )}
+        <S.Anchor href='http://52.78.209.196:3000' target='_blank' rel='noreferrer'>
+          <i className='ri-rss-fill' />
+          <span>Blockchain Network</span>
+        </S.Anchor>
       </S.AuthWrapper>
     </S.Header>
   )
