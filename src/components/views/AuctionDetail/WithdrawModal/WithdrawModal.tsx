@@ -43,7 +43,7 @@ const BidModal = () => {
     },
   })
 
-  const onSumbit = () => {
+  const onSubmit = () => {
     setIsSubmitting(true)
     mutate()
   }
@@ -58,7 +58,7 @@ const BidModal = () => {
         <S.CloseButton onClick={() => setModal(null)}>
           <i className='ri-close-line' />
         </S.CloseButton>
-        <S.ModalForm onSubmit={handleSubmit(onSumbit, onError)}>
+        <S.ModalForm onSubmit={handleSubmit(onSubmit, onError)}>
           <label>
             <Subtitle size='4'>비밀번호</Subtitle>
             <S.ModalInput

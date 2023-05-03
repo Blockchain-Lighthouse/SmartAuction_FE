@@ -67,20 +67,12 @@ const Header = () => {
             </S.Button>
           </S.UserInfoBlock>
         ) : (
-          <>
-            <Link href={ROUTE.SIGN_IN}>
-              <S.Button>
-                <i className='ri-login-box-line'></i>
-                <span>Sign In</span>
-              </S.Button>
-            </Link>
-            <Link href={ROUTE.SIGN_UP}>
-              <S.Button>
-                <i className='ri-user-add-line'></i>
-                <span>Sign Up</span>
-              </S.Button>
-            </Link>
-          </>
+          <Link href={ROUTE.SIGN_IN}>
+            <S.Button>
+              <i className='ri-login-box-line'></i>
+              <span>Sign In</span>
+            </S.Button>
+          </Link>
         )}
         <S.Anchor href='http://52.78.209.196:3000' target='_blank' rel='noreferrer'>
           <i className='ri-rss-fill' />
