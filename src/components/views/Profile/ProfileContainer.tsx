@@ -101,7 +101,7 @@ const ProfileContainer = () => {
               </S.TableRow>
               <S.TableRow>
                 <S.TableRowName size='4'>잔액</S.TableRowName>
-                <span>{user.balance} Matic</span>
+                <span>{user.balance} BCH</span>
               </S.TableRow>
               <S.TableRow>
                 <S.TableRowName size='4'>가입일</S.TableRowName>

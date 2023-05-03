@@ -46,7 +46,7 @@ const AuctionContainer = () => {
                       <S.Status status={auction.status}>{AUCTION_STATUS[auction.status]}</S.Status>
                     </div>
                     <div>
-                      <span>{auction.minPrice} MATIC</span>
+                      <span>{auction.minPrice} BCH</span>
                       <span>~{auction.expiredAt.slice(0, 10)}</span>
                     </div>
                   </S.Description>

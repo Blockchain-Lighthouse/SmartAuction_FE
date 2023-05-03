@@ -32,7 +32,7 @@ const Bidders = ({ contract }: Props) => {
         : bidders?.map((bidder) => (
             <S.BidderInformation key={bidder.biddedAt}>
               <span>{bidder.bidder}</span>
-              <span>{bidder.price} MATIC</span>
+              <span>{bidder.price} BCH</span>
               <span>{formatDate(Number(bidder.biddedAt))}</span>
             </S.BidderInformation>
           ))}

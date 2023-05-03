@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
@@ -21,7 +22,7 @@ export const useAuctionDetail = () => {
       if (!auction?.contract) {
         throw new Error('Auction contract is not defined')
       }
-      return getAuctionBidders(auction?.contract)
+      return getAuctionBidders(auction.contract)
     },
     {
       select: (data) => data?.payload.bidders,
@@ -64,7 +65,14 @@ export const useFavorites = () => {
       }
       queryClient.invalidateQueries(['favorites'])
     },
-    onError: () => {
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.data.statusCode === 403) {
+          toast.error('로그인이 필요합니다.')
+          return
+        }
+      }
+
       toast.error('즐겨찾기 추가에 실패했습니다.')
     },
   })

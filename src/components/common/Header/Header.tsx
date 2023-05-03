@@ -51,7 +51,7 @@ const Header = () => {
                 </Link>
                 <div>
                   <Text size='2'>{user.nickname}님, 안녕하세요!</Text>
-                  <Text size='1'>Balance: {Number(user.balance).toFixed(3)} MATIC</Text>
+                  <Text size='1'>Balance: {Number(user.balance).toFixed(3)} BCH</Text>
                 </div>
               </S.User>
             )}

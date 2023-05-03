@@ -88,11 +88,11 @@ const AuctionDetailContainer = () => {
               )}
               <S.PriceWrapper>
                 <Subtitle size='4'>입찰시작가</Subtitle>
-                <Subtitle>{auction?.minPrice} MATIC</Subtitle>
+                <Subtitle>{auction?.minPrice} BCH</Subtitle>
               </S.PriceWrapper>
               <S.PriceWrapper>
                 <Subtitle size='4'>즉시낙찰가</Subtitle>
-                <Subtitle> {auction?.maxPrice} MATIC</Subtitle>
+                <Subtitle> {auction?.maxPrice} BCH</Subtitle>
               </S.PriceWrapper>
               {auction?.status && auction?.status <= 2 && auction.writerEoa !== user?.publicKey && (
                 <S.MenuButton
