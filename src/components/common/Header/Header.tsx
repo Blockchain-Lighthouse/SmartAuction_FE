@@ -7,7 +7,11 @@ import Link from 'next/link'
 import Text from '@/components/common/Text'
 import ROUTE from '@/constants/route'
 import { AuthContext } from '@/contexts/auth'
-import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
+import {
+  getAccessTokenFromLocalStorage,
+  removeAccessTokenFromLocalStorage,
+  removeRefreshTokenFromLocalStorage,
+} from '@/features/auth/token'
 import { getUserInfo } from '@/services/api/user'
 
 import * as S from './Header.styled'
@@ -23,6 +27,8 @@ const Header = () => {
   })
 
   const handleClickLogout = () => {
+    removeAccessTokenFromLocalStorage()
+    removeRefreshTokenFromLocalStorage()
     setIsLoggedIn(false)
   }
 
