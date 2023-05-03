@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import Icon from '@/components/common/Icon'
 import Subtitle from '@/components/common/Subtitle'
 import Title from '@/components/common/Title'
 import ROUTE from '@/constants/route'
@@ -140,7 +141,21 @@ const SignUpContainer = () => {
           <small role='alert'>{errors.passwordConfirm?.message}</small>
         </label>
         <S.Button type='submit' disabled={isSubmitting}>
-          회원가입
+          {isSubmitting ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <Icon iconName='blocksWave' />
+              <span>회원가입 진행중...</span>
+            </div>
+          ) : (
+            <span>회원가입</span>
+          )}
         </S.Button>
         <S.LinkWrapper>
           이미 계정이 있으신가요? <Link href={ROUTE.SIGN_IN}>로그인</Link>
