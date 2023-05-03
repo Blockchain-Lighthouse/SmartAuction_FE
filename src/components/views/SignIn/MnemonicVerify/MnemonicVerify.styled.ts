@@ -38,7 +38,7 @@ const Input = styled.input`
 `
 
 const Button = styled.button`
-  ${tw`w-96 rounded-lg bg-blue-500 px-4 py-2 text-white`}
+  ${tw`flex w-96 justify-center rounded-lg bg-blue-500 px-4 py-2 text-white`}
 `
 
 export { Container, Form, MnemonicBlockWrapper, MnemonicInputBlock, PasswordInputWrapper, Input, Button }

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import Icon from '@/components/common/Icon'
 import Subtitle from '@/components/common/Subtitle'
 import Title from '@/components/common/Title'
 import * as S from '@/components/views/SignIn/MnemonicVerify/MnemonicVerify.styled'
@@ -23,7 +24,11 @@ interface FormValues {
 
 const MnemonicVerify = () => {
   const { push } = useRouter()
-  const { register, handleSubmit } = useForm<FormValues>()
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<FormValues>()
   const { mnemonic } = useContext(MnemonicContext)
   const { setIsLoggedIn } = useContext(AuthContext)
   const randomNumbers = pickRandomNumbers(1, 11)
@@ -90,7 +95,22 @@ const MnemonicVerify = () => {
             })}
           />
         </S.PasswordInputWrapper>
-        <S.Button type='submit'>지갑 등록</S.Button>
+        <S.Button type='submit' disabled={isSubmitting}>
+          {isSubmitting ? (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <Icon iconName='blocksWave' />
+              <span>지갑 등록중...</span>
+            </div>
+          ) : (
+            <span>지갑 등록</span>
+          )}
+        </S.Button>
       </S.Form>
     </S.Container>
   )
