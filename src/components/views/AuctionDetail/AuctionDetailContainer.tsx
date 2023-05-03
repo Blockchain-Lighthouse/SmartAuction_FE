@@ -107,7 +107,7 @@ const AuctionDetailContainer = () => {
                   입찰하기
                 </S.MenuButton>
               )}
-              {auction?.status === 3 && bidders?.at(-1)?.bidder === user?.publicKey && (
+              {auction?.status === 3 && bidders?.at(-1)?.bidder === user?.nickname && (
                 <S.MenuButton onClick={() => setModal('signature')}>서명하기</S.MenuButton>
               )}
               {auction?.status === 4 && auction.writerEoa === user?.publicKey && (
